@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
 
 CFG_DIR="$HOME/.cfg/"
-TMP_DIR="$HOME/.cfg-tmp"
+TMP_DIR="$HOME/.cfg-tmp/"
 REPO_URL="https://github.com/spejamchr/cfg.git"
 
-CONFIG=config
-ALIAS="/usr/bin/git --git-dir=$CFG_DIR --work-tree=$HOME"
-
 if [ -d "$CFG_DIR" ]; then
-  if [ alias | grep "$CONFIG='$ALIAS'" ]; then
-    # Don't remove the directory
+  if [ "$USES_DOTS" ]; then
+    echo "Leaving directory: $CFG_DIR"
   else
     echo "removing directory: $CFG_DIR"
     rm -rf "$CFG_DIR"
@@ -17,12 +14,11 @@ if [ -d "$CFG_DIR" ]; then
 fi
 
 if [ ! -d "$CFG_DIR" ]; then
-  git clone --separate-git-dir=$CFG_DIR $REPO_URL $TMP_DIR
-  rm -r $TMP_DIR
+  git clone --bare "$REPO_URL" "$CFG_DIR"
+  mkdir "$TMP_DIR"
+  git --git-dir="$CFG_DIR" --work-tree="$TMP_DIR" checkout
+  cp -R "$TMP_DIR" "$HOME"
+  rm -rf "$TMP_DIR"
 fi
 
-function config {
-  /usr/bin/git --git-dir=$CFG_DIR --work-tree=$HOME $@
-}
-
-config pull origin master
+git --git-dir="$CFG_DIR" --work-tree="$HOME" pull origin master
