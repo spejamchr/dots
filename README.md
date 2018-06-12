@@ -13,9 +13,16 @@ dotfiles, so be careful if you want to use this!
 
 ## Usage
 
-Just pipe the shell script to bash:
+Just pipe the `install.sh` script to bash:
 
 ```
 curl -Lks https://raw.githubusercontent.com/spejamchr/dots/master/install.sh | /bin/bash
 ```
 
+## Uninstall
+
+If you want to remove the tracked dotfiles, run the `uninstall.sh` script:
+
+```
+curl -Lks https://raw.githubusercontent.com/spejamchr/dots/master/uninstall.sh | /bin/bash
+```
